@@ -1,0 +1,24 @@
+{% extends "theme.html" %}
+
+{% block head%}
+<style>
+  body{
+    background-attachment: fixed;
+  }
+</style>
+{% endblock %}
+
+{% block body%}
+
+  <div id="box-title-explore">
+    <h1 class="txt-title-explore">25 Prophets Story</h1>
+  </div>
+  <div class="container-explore">
+    {% for i in range(inf|length) %}
+      <div class="videos">
+        <iframe class="frame" width="320" height="200" src="{{inf[i|string]['ytlink']}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <label class="txt-explore" for="">Prophet {{inf[i|string]["prophet"]}}</label>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

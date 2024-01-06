@@ -1,0 +1,67 @@
+{% extends "admins/theme.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block jquery %}
+{% endblock %}
+
+{% block body %}
+
+<form class="ui form" method="post" action="">
+    {% for msg in get_flashed_messages() %}
+        <p>{{ msg }}</p>
+    {% endfor %}
+
+    {{ uform.csrf_token }}
+
+    <label for=""><strong>Id: </strong>{{users.id}}</label>
+    <br>
+    <label for=""><strong>Date Join: </strong>{{users.date_join}}</label>
+    <br>
+    <label for=""><strong>Username: </strong>{{users.username}}</label>
+    {{ uform.username }}
+    <br><br>
+
+    <label for=""><strong>Email: </strong>{{users.email}}</label>
+    {{ uform.email }}
+    <br><br>
+
+    <label for=""><strong>Password Hash: </strong>{{users.password}}</label>
+    <br>
+
+    <label for=""><strong>Last Read: </strong>{{users.last_read}}</label>
+    {{ uform.last_read }}
+    <br><br>
+
+    <label for=""><strong>Bookmarks: </strong>{{users.bookmarks}}</label>
+    {{ uform.bookmarks }}
+    <br><br>
+
+    <label for=""><strong>AP: </strong>{{users.ap}}</label>
+    {{ uform.ap }}
+    <br><br>
+
+    <label for=""><strong>Read Ayahs: </strong>{{users.read_ayahs}}</label>
+    {{ uform.read_ayahs }}
+    <br><br>
+
+    <label for=""><strong>Read Juz: </strong>{{users.read_juz}}</label>
+    {{ uform.read_juz }}
+    <br><br>
+
+    <label for=""><strong>Anonym: </strong>{{users.anonym}}</label>
+    {{ uform.anonym }}
+    <br><br>
+
+    <label for=""><strong>Khatam Post: </strong>{{users.khatam_post}}</label>
+    <br>
+
+    <label for=""><strong>Khatam Member: </strong>{{users.khatam_member}}</label>
+    <br>
+
+    <button type="submit">Update</button>
+</form>
+
+    
+{% endblock %}

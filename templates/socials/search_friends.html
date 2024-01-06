@@ -1,0 +1,62 @@
+{% extends "theme.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<div id="box-title-sf">
+    <label for="box-src-usr" class="rank">Search Friends</label>
+</div>
+
+<form action="" method="post">
+    {{ sff.csrf_token }}
+    {{sff.username(id='box-src-usr') }}
+
+    <input type="submit" name="" id="btn-search" value="Search">
+    
+</form>
+
+<div id="fr-profile-container">
+    {% if found_users %}
+        {% for i in found_users %}
+            <div class="fr-profile-box">
+                {% if i.gender == "Female" %}
+                    <img class="pp-vf" src="/static/cewe.png" alt="">
+                {% else %}
+                    <img class="pp-vf" src="/static/cowo.png" alt="">
+                {% endif %}
+
+                {% if i.id == current_user.id %}
+                    <button class="btn-addf-vf" disabled><a href="">Self</a></button>
+                {% else %}
+                    {% if i.id in lsf_id %}
+                        <button class="btn-addf-vf" disabled><a href="">My Friends</a></button>
+                    {% else %}
+                        <button class="btn-addf-vf" disabled><a href="{{url_for('add_friends', id=i.id)}}">Add Friends</a></button>
+                    {% endif %}
+                {% endif %}
+                <button class="btn-stalk-vf"><a href="{{url_for('stalk', id=i.id)}}">Stalk</a></button>
+
+                <br>
+                <label class="lbl-vf" for="">Username: {{i.username}}</label>
+                <br>
+                <label class="lbl-vf" for="">Ayah/day: {{('%0.2f'| format(i.read_ayahs/rules.days)|float)}}</label>
+            </div>
+        {% endfor %}
+
+
+    {% else %}
+        <h1 style="position: absolute; 
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 100px;
+        color: white;
+        left: 35%;
+        top: 125px;">No match</h1>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends "theme.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+  <button onclick="up_ap(this.value)" id="updater" value="{{current_user.ap}}" hidden></button>
+
+  <div class="tier">
+  {% set rulap = str2list(rules.ayah_points) %}
+  {% set tinames = sstr2list(rules.tier_names) %}
+
+  <img class="imgtier" src="/static/{{img}}.png" alt="">
+  <p class="nametier">{{tier}}</p>
+  <div class="container">
+    <div class="title-text">
+      Ayah Points
+    </div>
+    <div class="progress progress0">
+      <div class="progress-bar">
+       <div class="progressing" id="progg"></div>
+       <span class="margin"></span>
+      </div>
+      <p class="percent-num">
+      {{current_user.ap}}
+      </p>
+    </div>
+  </div>
+
+  <label class="stat">Read Ayahs: {{current_user.read_ayahs}}</label><br><br>
+  <label class="stat">Read Juz: {{current_user.read_juz}}</label><br><br>
+  <label class="stat">Ayah/day: {{('%0.2f'| format(current_user.read_ayahs/rules.days)|float)}}</label><br><br>
+
+  <div class="friend-box">
+    <a href="{{url_for('view_friends', id=current_user.id)}}">
+        <label id="t-friend" for="">Friends: {{total_f}}</label>
+    </a>
+    <form action="url_for('dashboard')">
+      <button id="btn-addf" type="submit" disabled>Self</button>
+    </form>
+  </div>
+
+  </div>
+
+
+  <div class="account">
+    <div class="container-deadline">
+      <div class="text-deadline">
+        {% set res = rules.season_end - rules.season_start%}
+        Seasons Ends In: {{res.days - rules.days}} days
+      </div>
+    </div>
+    {% if current_user.gender == "Female" %}
+    <img class="avatar" src="/static/cewe.png" alt="">
+    {% else %}
+    <img class="avatar" src="/static/cowo.png" alt="">
+    {% endif %}
+    <br>
+    <label class="list">Id: {{ current_user.id }}</label>
+    <br>
+    <label class="list">Username: {{ current_user.username }}</label>
+    <br>
+    <label class="list">Email: {{ current_user.email }}</label> 
+    <br>
+    <label class="list">Gender: {{ current_user.gender }}</label> 
+    <br>
+    <h1 class="list">Joined Khataman</h1>
+    <br><br>
+    <div class="joined-khatam">
+      {% set iter = [0] %}
+      {% for i in current_user.khatam_member %}
+        {% for j in range(i.members|length)%}
+          {% if i.members[j] == current_user %}
+            {% if iter.append(iter.pop() +1 ) %} {% endif %}
+            <a class="list-khataman" href="/bkhatam/join/{{i.id}}">{{iter[0]}}. {{i.title}} | Juz: {{str2list(i.member_juz)[j]}} 
+              {% for k in pkhatam %}
+                {% if k.for_khatam_id == i.id %}
+                 | {{k.read}}/{{k.max_read}} ayahs</a><br>
+                {% else %}
+                {% endif %}
+              {% endfor %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+
+
+  </div>
+
+
+{% endblock %}
+
+{% block footer %}
+  <script>
+
+    function up_ap(ap=0){
+      let bar = document.getElementById("progg");
+
+      if (ap < 150)
+      {
+        res = ap/150*100;
+        bar.style.width = res.toString() + "%";
+      }
+      else if (ap >= 150 && ap < 650)
+      {
+        ap -= 150;
+        res = ap/500*100;
+        bar.style.width = res.toString() + "%";
+      }
+      else if (ap >= 650 && ap < 1400)
+      {
+        ap -= 650;
+        res = ap/750*100;
+        bar.style.width = res.toString() + "%";
+      }
+      else if (ap >= 1400 && ap < 2400)
+      {
+        ap -= 1400;
+        res = ap/1000*100;
+        bar.style.width = res.toString() + "%";
+      }
+      else if (ap >= 2400 && ap < 3900)
+      {
+        ap -= 2400;
+        res = ap/1500*100;
+        bar.style.width = res.toString() + "%";
+      }
+      else if (ap >= 3900 && ap < 5750)
+      {
+        ap -= 3900
+        res = ap/1750*100;
+        bar.style.width = res.toString() + "%";
+      }
+      else if (ap >= 5750 && ap < 8000)
+      {
+        ap -= 5750
+        res = ap/2250*100;
+        bar.style.width = res.toString() + "%";
+      }
+      else
+      {
+        bar.style.width = "100%";
+      }
+
+
+    }
+
+    let trig = document.getElementById("updater");
+    trig.click();
+
+  </script>
+{% endblock %}

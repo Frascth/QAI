@@ -1,0 +1,67 @@
+{% extends "theme.html" %}
+
+{% block head %}
+<style>
+    body {
+      background-attachment: fixed;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+
+<div class="bg-rank">
+    <h1 class="rank">Galery</h1>
+</div>
+
+
+<div id="container-g">
+    {% if sh %}
+        {% for i in sh %}
+        <div class="box-container-g">
+            <div class="history-header-g">
+                <label for="" class="txt-title-g"> Season {{i.season_name}}</label>
+            </div>
+        
+            <div class="history-box-g">
+                <div class="tier-history-g">
+                    <img class="img-tier-g" src="/static/{{i.tierimg_max}}.png" alt="">
+                    <div class="tier-label-g"><label for="" class="txt-tlabel-g">{{i.tiername_max}}</label></div>
+                </div>
+
+                <div class="box-stats-g">
+                    <label for="" class="txt-content-g">Ayah Points: {{i.ap}}</label><br><br>
+                    <label for="" class="txt-content-g">Ayah/day (A/D): {{i.read_ayahpday}}</label><br><br>
+                    <label for="" class="txt-content-g">Read ayahs: {{i.read_ayahs}}</label><br><br>
+                    <label for="" class="txt-content-g">Read juz: {{i.read_juz}}</label><br><br>
+                    <label for="" class="txt-content-g">Visit explore: {{i.visit_explore}}</label><br><br>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="box-container-g">
+        <div class="history-header-g">
+            <label for="" class="txt-title-g"> Season {{rules.season_name}}</label>
+        </div>
+    
+        <div class="history-box-g">
+            <div class="box-stats-g" style="top: 120px; left: 0px; text-align: center;">
+                <label for="" class="txt-content-g2">Ongoing</label><br>
+                <label for="" class="txt-onrec-g">Season duration {{rules.season_duration}} days</label><br>
+                <label for="" class="txt-content-g2">{{utc2loc(rules.season_start)}}</label><br>
+                <label for="" class="txt-content-g2">to</label><br>
+                <label for="" class="txt-content-g2">{{utc2loc(rules.season_end)}}</label><br>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

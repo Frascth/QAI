@@ -1,0 +1,182 @@
+{% extends "theme.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<div class="bg-rank">
+  <h1 class="rank">Mission</h1>
+</div>
+
+<input type="text" name="" id="hours" value="{{h}}" hidden>
+<input type="text" name="" id="minutes" value="{{m}}" hidden>
+<input type="text" name="" id="seconds" value="{{s}}" hidden>
+
+<div id="container-m">
+
+  <div class="box-m">
+
+    <div class="header-m">
+      <label class="txt-header-m"><strong>Daily Mission</strong></label>
+      <div class="box-timer-mm">
+        <label id="timer" for="" class="txt-content-0">(Refresh in {{time}})</label>
+      </div>
+    </div>
+    <div class="box-mission-m">
+
+      <div class="box-reward-m">
+        <label class="txt-reward-m">15 AP</label>
+      </div>
+
+      <div class="box-txt-mission-m">
+        {% set max = str2list(dm.max_juz_day)|length%}
+        {% set prog = str2list(dm.juz_day)|length%}
+
+        {% if dm.jc_khatam_today %}
+          <div class="box-txt-title-m"><label for="" class="txt-title-m">10% Challenge</label></div> 
+          <label for="" class="txt-content-m">Read 10% of unread ayah from your khataman juz {{dm.juz_name}}, {{max}} ayahs</label>
+        {% else %}
+          <div class="box-txt-title-m"><label for="" class="txt-title-m">Let's Start Khataman</label></div> 
+          <label for="" class="txt-content-m">Create or join khataman</label>
+        {% endif %}
+      </div>
+
+      <div class="box-prog-m">
+        {% if dm.jc_khatam_today %}
+          {% if prog > 0%}
+            <label class="txt-reward-m" style="color: black;">{{max-prog}}/{{max}}</label>
+          {% else %}
+           <label class="txt-reward-m" style="color: black;">Complete</label>
+          {% endif %}
+
+        {% else %}
+          {% if dm.jc_khatam %}
+            <label class="txt-reward-m" style="color: black;">Complete</label>
+          {% else %}
+            <label class="txt-reward-m" style="color: black;">0/1</label>
+          {% endif %}
+        {% endif %}
+      </div>
+
+    </div>
+
+    <div class="box-mission-m">
+
+      <div class="box-reward-m">
+        <label class="txt-reward-m">10 AP</label>
+      </div>
+
+      <div class="box-txt-mission-m">
+        {% set max = str2list(dm.max_surah_day)|length %}
+        {% set prog = str2list(dm.surah_day)|length %}
+        <div class="box-txt-title-m"><label for="" class="txt-title-m">Surah of the Day</label></div> 
+        <label for="" class="txt-content-m">Read surah ({{dm.surah_name}}) {{max}} ayahs</label>
+      </div>
+
+      <div class="box-prog-m">
+        {% if prog > 1 %}
+          <label class="txt-reward-m" style="color: black;">{{max-prog}}/{{max}}</label>
+        {% else %}
+          <label class="txt-reward-m" style="color: black;">Complete</label>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <div class="box-mission-m">
+
+      <div class="box-reward-m">
+        <label class="txt-reward-m">5 AP</label>
+      </div>
+
+      <div class="box-txt-mission-m">
+        <div class="box-txt-title-m"><label for="" class="txt-title-m">Upgrade Almaerifuh</label></div> 
+        <label for="" class="txt-content-m">Visit explore 3 times</label>
+      </div>
+
+      <div class="box-prog-m">
+        {% if dm.visit_explore < dm.max_visit_explore%}
+          <label class="txt-reward-m" style="color: black;">{{dm.visit_explore}}/{{dm.max_visit_explore}}</label>
+        {% else %}
+          <label class="txt-reward-m" style="color: black;">Complete</label>
+        {% endif %}
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+
+{% endblock %}
+
+{% block footer %}
+<script>
+  var timer = document.getElementById("timer");
+
+  var h = document.getElementById("hours").value;
+  var m = document.getElementById("minutes").value;
+  var s = document.getElementById("seconds").value;
+
+  h = parseInt(h)
+  m = parseInt(m)
+  s = parseInt(s)
+
+  function up_time(){
+    if(s<10){
+      a = `0${s}`
+    }
+    else{
+      a = s
+    }
+
+    if(m<10){
+      b = `0${m}`
+    }
+    else{
+      b=m
+    }
+
+    if(h<10){
+      c = `0${h}`
+    }
+    else{
+      c=h
+    }
+    time = `(Refresh in ${c}:${b}:${a})`;
+    
+    timer.textContent = time;
+  }
+
+  up_time();
+
+
+  // Update the count down every 1 second
+  var x = setInterval(function() {
+    if (s>0) {
+      s -= 1;
+    }
+    else{
+      s=59;
+      if (m>0){
+        m -= 1;
+      }
+      else{
+        m = 59;
+        if (h>0){
+          h-= 1;
+        }
+      }
+    }
+
+    up_time();
+
+  }, 1000);
+
+</script>
+{% endblock %}

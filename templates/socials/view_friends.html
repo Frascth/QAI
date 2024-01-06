@@ -1,0 +1,51 @@
+{% extends "theme.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<div class="bg-rank-l">
+
+{% if current_user.id == id %}
+    <h1 class="rank">My Friends List</h1>
+{% else %}
+    <h1 class="rank">{{owner.username}}'s Friends List</h1>
+{% endif %}
+</div>
+
+<div id="fr-profile-container">
+
+    {% for i in range(ls_id|length) %}
+        <div class="fr-profile-box">
+            {% if ls_gender[i] == "Female" %}
+                <img class="pp-vf" src="/static/cewe.png" alt="">
+            {% else %}
+                <img class="pp-vf" src="/static/cowo.png" alt="">
+            {% endif %}
+
+            {% if ls_id[i] == current_user.id %}
+                <button class="btn-addf-vf" disabled><a href="">Self</a></button>
+            {% elif current_user.id == id %}
+                <button class="btn-addf-vf" disabled><a href="">My Friends</a></button>
+            {% else %}
+                {% if ls_id[i] in curr_usr_f_id %}
+                    <button class="btn-addf-vf" disabled><a href="">My Friends</a></button>
+                {% else %}
+                    <button class="btn-addf-vf" disabled><a href="{{url_for('add_friends', id=ls_id[i])}}">Add Friends</a></button>
+                {% endif %}
+            {% endif %}
+            <button class="btn-stalk-vf"><a href="{{url_for('stalk', id=ls_id[i])}}">Stalk</a></button>
+
+            <br>
+            <label class="lbl-vf" for="">Username: {{ls_usernames[i]}}</label>
+            <br>
+            <label class="lbl-vf" for="">Ayah/day: {{('%0.2f'| format(ls_ad[i])|float)}}</label>
+        </div>
+    {% endfor %}
+
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

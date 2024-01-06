@@ -1,0 +1,54 @@
+{% extends "admins/theme.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block jquery %}
+{% endblock %}
+
+{% block body %}
+
+{% for msg in get_flashed_messages() %}
+    <p>{{ msg }}</p>
+{% endfor %}
+
+
+<form class="ui form" method="post" action="">
+    {{ kform.csrf_token }}
+    <label for=""><strong>Id: </strong>{{khat.id}}</label>
+    <br>
+    <label for=""><strong>Author Id: </strong>{{khat.author_id}}</label>
+    <br>
+    <label for=""><strong>Author: </strong>{{khat.author.username}}</label>
+    <br>
+    <label for=""><strong>title: </strong>{{khat.title}}</label>
+    {{ kform.title }}
+    <br><br>
+    <label for=""><strong>start: </strong>{{khat.start}}</label>
+    {{ kform.start }}
+    <br><br>
+    <label for=""><strong>deadline: </strong>{{khat.deadline}}</label>
+    {{kform.deadline}}
+    <br><br>
+    <label for=""><strong>setpassword: </strong>{{khat.setpassword}}</label>
+    {{kform.setpassword}}
+    <br><br>
+    <label for=""><strong>password: </strong>{{khat.password}}</label>
+    {{kform.password}}
+    <br><br>
+    <label for=""><strong>member_rule: </strong>{{khat.member_rule}}</label>
+    {{kform.member_rule}}
+    <br><br>
+    <label for=""><strong>member_juz: </strong>{{khat.member_juz}}</label>
+    {{kform.member_juz}}
+    <br><br>
+    <label for=""><strong>stoped: </strong>{{khat.stoped}}</label>
+    {{kform.stoped}}
+    <br><br>
+    <label for=""><strong>khat Member: </strong>{{khat.members}}</label>
+    <br>
+    <button type="submit">Delete</button>
+</form>
+<br><br><br>
+    
+{% endblock %}

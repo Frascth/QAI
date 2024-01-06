@@ -1,0 +1,24 @@
+{% extends "theme.html" %}
+
+{% block body %}
+
+  </div>
+    <div class="login">
+      <h1>Login</h1>
+      <form method="post">
+        {{ lform.csrf_token }}
+
+        <div class="txt_login">
+          {{lform.email}}
+        </div>
+        <div class="txt_login">
+          {{lform.password}}
+        </div>
+        <div class="loginpass"><a href="http://wa.me/+6285607060067">Forgot Password?</a></div>
+        <input class="loginsubmit" type="submit" value="Login">
+        <div class="signup_link">
+          Not a member? <a href="{{url_for('signup')}}">Sign Up</a>
+        </div>
+      </form>
+    </div>
+{% endblock %}

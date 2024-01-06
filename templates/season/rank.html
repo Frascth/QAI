@@ -1,0 +1,88 @@
+{% extends "theme.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<div class="bg-rank">
+  <h1 class="rank">Rank</h1>
+
+</div>
+
+<div id="container-ss">
+
+  <div class="rank-header-ss">
+    <h2 class="rank2">Friends</h2>
+    <label for="" class="txt-1-ss">Rank</label>
+    <label for="" class="txt-2-ss">Username</label>
+    <label for="" class="txt-3-ss">AP</label>
+  </div>
+
+  <div class="rank-box-ss">
+
+    {% for i in range(ls_id|length) %}
+      <div class="det-box-ss">
+        <label for="" class="txt-rank-ss">{{i+1}}</label>
+        {% if ls_gender[i] == "Female" %}
+          <div class="box-pp-ss"><a href="{{url_for('stalk', id=ls_id[i])}}"><img class="pp-ss" src="/static/cewe.png" alt=""></a></div>
+        {% else %}
+        <div class="box-pp-ss"><a href="{{url_for('stalk', id=ls_id[i])}}"><img class="pp-ss" src="/static/cowo.png" alt=""></a></div>
+        {% endif %}
+        <div class="c-det">
+          <div class="name-ss"><label for="" class="txt-user-ss"><a href="{{url_for('stalk', id=ls_id[i])}}">{{ls_username[i]}}</a></label></div>
+          <div class="img-ss"><a href="{{url_for('stalk', id=ls_id[i])}}"><img src="/static/{{ls_img[i]}}.png" alt=""></a></div>
+          <div class="tier-ss"><label for="" class="txt-tier-ss">{{ls_tiernames[i]}}</label></div>
+          <div class="ap-ss">
+            {% if ls_ap[i] >= 1000 %}
+            <label for="" class="txt-ap-ss">{{ls_ap[i]//1000}}K</label>
+            {% else %}
+            <label for="" class="txt-ap-ss">{{ls_ap[i]}}</label>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
+  </div>
+
+  <div class="rank-header-ss">
+    <h2 class="rank2">Global</h2>
+    <label for="" class="txt-1-ss">Rank</label>
+    <label for="" class="txt-2-ss">Username</label>
+    <label for="" class="txt-3-ss">AP</label>
+
+
+  </div>
+
+  <div class="rank-box-ss">
+
+    {% for i in range(lsg_id|length) %}
+      <div class="det-box-ss">
+        <label for="" class="txt-rank-ss">{{i+1}}</label>
+        {% if lsg_gender[i] == "Female" %}
+          <div class="box-pp-ss"><a href="{{url_for('stalk', id=lsg_id[i])}}"><img class="pp-ss" src="/static/cewe.png" alt=""></a></div>
+        {% else %}
+          <div class="box-pp-ss"><a href="{{url_for('stalk', id=lsg_id[i])}}"><img class="pp-ss" src="/static/cowo.png" alt=""></a></div>
+        {% endif %}
+        <div class="c-det">
+          <div class="name-ss"><label for="" class="txt-user-ss"><a href="{{url_for('stalk', id=lsg_id[i])}}">{{lsg_username[i]}}</a></label></div>
+          <div class="img-ss"><a href="{{url_for('stalk', id=lsg_id[i])}}"><img src="/static/{{lsg_img[i]}}.png" alt=""></a></div>
+          <div class="tier-ss"><label for="" class="txt-tier-ss">{{lsg_tiernames[i]}}</label></div>
+          <div class="ap-ss">
+            {% if lsg_ap[i] >= 1000 %}
+            <label for="" class="txt-ap-ss">{{lsg_ap[i]//1000}}K</label>
+            {% else %}
+            <label for="" class="txt-ap-ss">{{lsg_ap[i]}}</label>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

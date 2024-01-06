@@ -1,0 +1,48 @@
+{% extends "theme.html" %}
+
+{% block body %}
+    <div class="signup">
+      <h1>Sign Up</h1>
+
+      <form method="POST" action="">
+        {{ sform.csrf_token }}
+
+        <div class="txt_signup">
+          {{ sform.username }}
+          {% for msg in sform.username.errors %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </div>
+
+        <div class="txt_signup">
+          {{ sform.gender }}
+          {% for msg in sform.gender.errors %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </div>
+
+        <div class="txt_signup">
+          {{ sform.email }}
+          {% for msg in sform.email.errors %}
+              <li>{{ msg }}</li>
+          {% endfor %}
+        </div>
+
+        <div class="txt_signup">
+          {{ sform.password }}
+          {% for msg in sform.password.errors %}
+              <li>{{ msg }}</li>
+          {% endfor %}
+        </div>
+
+        <div class="txt_signup">
+          {{ sform.confirm }}
+          {% for msg in sform.confirm.errors %}
+              <li>{{ msg }}</li>
+          {% endfor %}
+        </div>
+
+        <input class="signupsubmit" type="submit" value="Register">
+      </form>
+    </div>
+{% endblock %}

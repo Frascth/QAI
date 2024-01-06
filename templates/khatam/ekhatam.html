@@ -1,0 +1,130 @@
+{% extends "theme.html" %}
+
+{% block jquery %}
+  <script>
+
+    $(function(){
+      $("#lblpass").hide();
+      $("#password").hide();
+      $("#myjuz").hide();
+      $("#juz").hide();
+
+      $("#pass").click(function(){
+        var x = $(this).is(":checked");
+        if(x == true){
+          $("#lblpass").show();
+          $("#password").show();
+        }
+        else{
+          $("#lblpass").hide();
+          $("#password").hide();
+        }
+      });
+      $("#selectmember").click(function(){
+        var x = $(this).find(":selected").text()
+        if (x=="Free to Choose"){
+          $("#myjuz").show();
+          $("#juz").show();
+        }
+        else{
+          $("#myjuz").hide();
+          $("#juz").hide();
+        }
+      });
+  });
+  </script>
+{% endblock%}
+
+{% block body %}
+  <div class="create">
+    <form method="post" action="" id="ekhatamform">
+        {{ ckform.csrf_token }}
+        <input type="text" name="id" value="{{found_khatam.id}}" readonly hidden>
+        {{ckform.my_juz(hidden=True)}}
+
+        <label class="label">Author : {{found_khatam.author.username}}</label>
+        <br>
+
+        <label class="label">Title : Old({{found_khatam.title}})</label>
+        {{ ckform.title(class='text')}}
+        {% for msg in ckform.title.errors %}
+            <li class="label">{{ msg }}</li>
+        {% endfor %}
+        <br>
+
+        <label class="label">Start : {{utc2loc(found_khatam.start)}}</label>
+        <br>
+
+        <label class="label">Deadline : Old({{utc2loc(found_khatam.deadline)}})</label>
+        {{ ckform.deadline(title="Set Khataman Deadline") }}
+        {% for msg in ckform.deadline.errors %}
+            <li class="label">{{ msg }}</li>
+        {% endfor %}
+        <br>
+
+        {{ ckform.setpassword(title="Set Khataman Password", label="setpassword", id="pass") }}
+        {% if found_khatam.setpassword == 0 %}
+            <label class="label" style="left:10%;" for="pass">Set Password Old(no password)</label>
+        {% else %}
+            <label class="label" style="left:10%;" for="pass">Set Password Old({{found_khatam.password}})</label>
+        {% endif %}
+        {% for msg in ckform.setpassword.errors %}
+            <li class="label">{{ msg }}</li>
+        {% endfor %}
+        <br>
+
+        <label class="label" for="password" id="lblpass">Password <br></label>
+        {{ ckform.password(class="pw", type="password", id="password") }}
+        {% for msg in ckform.password.errors %}
+            <li class="label">{{ msg }}</li>
+        {% endfor %}
+        <br>
+
+        <label class="label" for="selectmember">Member Rule Old({{found_khatam.member_rule}})<br></label>
+        {{ ckform.member_rule(id="selectmember", class="smember") }}
+        {% for msg in ckform.member_rule.errors %}
+            <li class="label">{{ msg }}</li>
+        {% endfor %}
+        <br>
+
+        {% for i in range(found_khatam.members|length) %}
+                {% if found_khatam.members[i] == current_user %}
+                    <label class="label"><strong>My Juz: </strong>{{ str2list(found_khatam.member_juz)[i] }}</label>
+                    <br>
+                {% endif %}
+        {% endfor %}
+        {% set urlto = url_for('ekhatam_members', id=found_khatam.id)%}
+
+        <button onclick="location='{{urlto}}'" class="bjoin" type="button">Members</button>
+        <button onclick="confirm_update();" class="bjoin" type="button">Update</button>
+
+    </form>
+  </div>
+
+  <!-- modal -->
+  <div id="del-modal">
+    <div class="del-modal-header">
+        <label for="" class="txt-content-1" style="font-size: 24px; color: white;">Update Khataman</label>
+    </div>
+
+    <div class="del-modal-content">
+        <label class="txt-content-1" style="font-size: 14px;">Are you sure want to update your khataman?</label>
+    </div>
+
+    <div class="del-modal-action">
+      <button onclick="$('#ekhatamform').submit()" class="btn2" type="submit">Update</button>
+      <button class="btn1" type="button">Cancel</button>
+    </div>
+
+  </div>
+{% endblock %}
+
+{% block footer %}
+<script>
+  $("#del-modal").hide();
+
+  function confirm_update(){
+        $("#del-modal").modal('show');
+    }
+</script>
+{% endblock %}

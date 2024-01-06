@@ -1,0 +1,132 @@
+{% extends "theme.html" %}
+
+{% block head %}
+<style>
+  body {
+    background-attachment: fixed;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+
+{{ bkform.csrf_token }}
+<div class="bg-rank-relative">
+  <h1 class="rank">Mine</h1>
+</div>
+
+<div class="bkhatam_box">
+  {% for i in range(khatams|length) %}
+    {% if khatams[i].author.id == current_user.id %}
+      <div class="join">
+        <form method="POST" action="{{url_for('jkhatam', id=khatams[i].id)}}">
+          <br>
+          
+          <label class="listjoin">Title : {{khatams[i].title}}</label>
+          <br><br>
+
+          <label class="listjoin">Author : {{khatams[i].author.username}}</label>
+          <br><br>
+
+          <label class="listjoin">Start : {{utc2loc(khatams[i].start)}}</label>
+          <br><br>
+          {% if khatams[i].extended <= -1 %}
+            <label class="listjoin">Deadline : ended (completed)</label>
+          {% else %}
+            <label class="listjoin">Deadline : {{utc2loc(khatams[i].deadline)}}</label>
+          {% endif %}
+          <br><br>
+          
+          {% if khatams[i].setpassword == 0 %}
+              {% set pass = "No" %}
+          {% else %}
+              {% set pass = "Yes" %}
+          {% endif %}
+          <label class="listjoin">Password : {{pass}}</label>
+          <br><br>
+
+          <label class="listjoin">Member Rule : {{khatams[i].member_rule}}</label>
+          <br><br>
+          
+          {% set ls_juz = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] %}
+          {% set member_juz = str2list(khatams[i].member_juz) %}
+
+          {% for i in member_juz %}
+              {% if i in ls_juz %}
+                  {% if ls_juz.remove(i) %} {% endif %}
+              {% endif %}
+          {% endfor %}
+
+          <p class="listjoin">Avalaible Juz :         
+            {% for i in ls_juz %}
+              <label>{{i}};</label>
+            {% endfor %}
+          </p>
+
+          <button id="bjoin" class="bjoin">Details</button> 
+        </form>
+      </div>
+    {% else %}
+    {% endif %}
+  {% endfor %}
+
+</div>
+
+<div class="bg-rank-relative" style="position: relative;">
+  <h1 class="rank">Others</h1>
+</div>
+<div class="bkhatam_box">
+  {% for i in range(khatams|length) %}
+  {% if khatams[i].author.id != current_user.id %}
+    <div class="join">
+      <form method="POST" action="{{url_for('jkhatam', id=khatams[i].id)}}">
+        <br>
+        <label class="listjoin">Title : {{khatams[i].title}}</label>
+        <br><br>
+        
+        <label class="listjoin">Author : {{khatams[i].author.username}}</label>
+        <br><br>
+
+        <label class="listjoin">Start : {{utc2loc(khatams[i].start)}}</label>
+        <br><br>
+
+        <label class="listjoin">Deadline : {{utc2loc(khatams[i].deadline)}}</label>
+        <br><br>
+        
+        {% if khatams[i].setpassword == 0 %}
+            {% set pass = "No" %}
+        {% else %}
+            {% set pass = "Yes" %}
+        {% endif %}
+        <label class="listjoin">Password : {{pass}}</label>
+        <br><br>
+
+        <label class="listjoin">Member Rule : {{khatams[i].member_rule}}</label>
+        <br><br>
+        
+        {% set ls_juz = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] %}
+        {% set member_juz = str2list(khatams[i].member_juz) %}
+
+        {% for i in member_juz %}
+            {% if i in ls_juz %}
+                {% if ls_juz.remove(i) %} {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        <p class="listjoin">Avalaible Juz :         
+          {% for i in ls_juz %}
+            <label>{{i}};</label>
+          {% endfor %}
+        </p>
+
+        <button id="bjoin" class="bjoin">Details</button> 
+      </form>
+    </div>
+  {% else %}
+  {% endif %}
+{% endfor %}
+</div>
+
+
+
+{% endblock %}

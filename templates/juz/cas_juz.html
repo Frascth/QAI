@@ -1,0 +1,105 @@
+{% extends "theme.html" %}
+
+{% block head %}
+  <script>
+
+    function subm(i, data){
+      islastread = data;
+      let el = document.getElementById('inp_lread'+i.toString());
+      let form = document.getElementById('form'+i.toString())
+      el.value = data;
+      form.submit();
+    }
+
+  </script>
+  <style>
+    body {
+      background-attachment: fixed;
+    }
+  </style>
+{% endblock %}
+
+
+
+{% block body %}
+
+
+  <h1 class="surah">Juz {{juzn}}</h1>
+  <h1 class="surah1">{{ls_ayah|length}} ayahs</h1>
+
+
+  {% for i in ls_murottal %}
+    <audio src="{{i}}"></audio>
+  {% endfor %}
+
+  <div class="alfatihah">
+    <div class="murottal">
+      <p class="murottal1">Murottal</p>
+      <a class="play" id="play">Play</a>
+      <a class="prev" id="prev" disabled="">Prev</a>
+      <label class="number" id="ayah">1</label>
+      <a class="next" id="next">Next</a>
+    </div>
+    
+    {% set ayahnquran = get_ayahnquran(ls_surah[0], start_ayah) %}
+    {% set surahn = [] %}
+    {% if surahn.append(get_surah_by_ayahnquran(ayahnquran)) %} {% endif %}
+    {% set ayahn_display = [start_ayah] %}
+
+    {% for i in range(ls_ayah|length)%}
+      {% if surahn[0] < 113 %}
+        {% if ayahnquran+i < inf[(surahn[0]+1)|string] %}
+          {% if ayahn_display.append(ayahn_display.pop() + 1) %}{% endif %}
+        {% else %}
+          {% if ayahn_display.pop() %} {% endif %}
+          {% if ayahn_display.append(1) %} {% endif %}
+          {% if surahn.append(surahn.pop() + 1) %} {% endif %}
+        {% endif %}
+      {% elif surahn == 113 %}
+        {% if ayahn_display.pop() %} {% endif %}
+        {% if ayahn_display.append(1) %} {% endif %}
+        {% if surahn.append(surahn.pop() + 1) %} {% endif %}
+      {% else %}
+        {% if ayahn_display.append(ayahn_display.pop() + 1) %}{% endif %}
+      {% endif %}
+
+      {% if ayahn_display[0] == 1 %}
+      <div class="container-bismillah">
+        <label for="" class="surahn-splitter">{{surahs[ls_surah[i]-1]['name']}}</label>
+        <div class="box-surahnum-splitter"><label for="" class="surahnum-splitter">{{ls_surah[i]}}</label></div>  
+        <label for="" class="ayahn-splitter">{{get_total_ayahnsurah(ls_surah[i])}} Ayahs</label>
+        <img src="/static/splitter_surah.png" alt="">
+      </div>
+    {% else %}
+    {% endif %}
+
+    <form method="POST" action="" id="ayah-{{ayahnquran+i}}" name="ayah_form">
+
+      <input type="text" name="ayahnquran" value="{{ayahnquran+i}}" hidden>
+      <input id="inp_lread{{ayahnquran+i}}" type="text" name="islastread" value="0" hidden>
+
+      <p class="angka">{{ayahn_display[0]}}</p>
+      <p class="arab">{{ls_ayah[i]}}</p>
+      <p class="latin0border">{{ls_read[i]}}</p>
+      <p class="latin">{{ls_trans[i]}}</p>
+      <button onclick="subm(this.value, 1)" class="mark" type="submit" value="{{ayahnquran+i}}"><i class="paperclip icon"></i>Mark as Last Read</button>
+      <button onclick="subm(this.value, 0)" class="mark" type="submit" value="{{ayahnquran+i}}"><i class="bookmark icon"></i>Add Bookmark</button>
+    </form>
+    {% endfor %}
+    
+    {% if juzn <= 1 %}
+    <a href="{{url_for('q_b_j', juz_number=juzn+1)}}" class="geser">Next &raquo;</a>
+    {% elif juzn < 30 %}
+    <a href="{{url_for('q_b_j', juz_number=juzn-1)}}" class="geser">&laquo; Previous</a>
+    <a href="{{url_for('q_b_j', juz_number=juzn+1)}}" class="geser">Next &raquo;</a>
+    {% else %}
+    <a href="{{url_for('q_b_j', juz_number=juzn-1)}}" class="geser">&laquo; Previous</a>
+    {% endif %}
+
+  </div>
+
+{% endblock %}
+
+{% block footer %}
+<script src="/static/surah.js"></script>
+{% endblock %}

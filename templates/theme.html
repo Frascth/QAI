@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QAI</title>
+  <link rel="icon" type="image/png" href="/static/Logo32.png">
+  <!--semantic-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body{
+      background-color: rgb(195, 203, 209);
+    }
+
+    #chatbot{
+      bottom: 20px;
+      right: 20px;
+      position: fixed;
+      z-index: 9;
+    }
+
+    #schat{
+      bottom: 40px;
+      right: 40px;
+      position: fixed;
+      z-index: 99;
+      width: 84px;
+      cursor: pointer;
+    }
+
+    #hchat {
+      top: 45px;
+      right: 20px;
+      position: fixed;
+      z-index: 999;
+    }
+
+    #cchat {
+      top: 55px;
+      right: 35px;
+      position: fixed;
+      z-index: 9999;
+      width: 24px;
+      cursor: pointer;
+    }
+
+
+
+  </style>
+
+  {% block head %}
+  {% endblock %}
+
+  {% block jquery %}
+
+  {% endblock %}
+
+</head>
+
+<body>
+  <img id="schat" src="/static/chatbot/momo.png" alt="">
+  <img id="cchat" src="/static/chatbot/close.png" alt="">
+  <img id="hchat" src="/static/chatbot/header.png" alt="">
+  <iframe id="chatbot" class="chatbot" width="380" height="600" src="https://app.smojo.org/zharmedia/mounev" title="Build Fast, Released Quickly" frameborder="0" allowfullscreen></iframe>
+    
+    <div class="dropdown">
+      <nav>
+        <div class="circle">
+          <a href="{{url_for('home')}}">
+            <img id="qai" src="/static/Logofit.png" alt="">
+          </a>
+        </div>
+        <ul>
+          <li><a class="btnexplore" id="btnexplore" href="{{url_for('explore')}}">EXPLORE</a></li>
+          <li><a class="btnquran" id="btnquran" href="#">QUR ' AN<i class="caret down icon"></i></a>
+              <ul>
+                <li><a class="btnrank" id="btnrank" href="#">Track Record<i class="caret right icon"></i></a>
+                    <ul>
+                      <li><a class="btnrankjuz" id="btnrankjuz" href="{{url_for('b_juz_t')}}">By Juz</a></li>
+                      <li><a class="btnranksurah" id="btnranksurah" href="{{url_for('b_surah_t')}}">By Surah</a></li>
+                    </ul>
+                </li>
+                <li><a class="btnunrank" id="btnunrank" href="#">Casual<i class="caret right icon"></i></a>
+                  <ul>
+                    <li><a class="btnunrankjuz" id="btnunrankjuz" href="{{url_for('b_juz_c')}}">By Juz</a></li>
+                    <li><a class="btnunranksurah" id="btnunranksurah" href="{{url_for('b_surah_c')}}">By Surah</a></li>
+                  </ul>
+                </li>
+              </ul>
+          </li>
+          <li><a class="btnkhataman" id="btnkhataman" href="#">KHATAMAN<i class="caret down icon"></i></a>
+            <ul>
+              <li><a  class="btncreate" id="btncreate" href="{{url_for('ckhatam')}}">Create</a></li>
+              <li><a class="btnjoin" id="btnjoin" href="{{url_for('bkhatam')}}">Join</a></li>
+            </ul>
+          </li>
+
+          <li><a class="btnkhataman" id="btnkhataman" href="#">SEASON<i class="caret down icon"></i></a>
+            <ul>
+              <li><a id="drop-season" href="{{url_for('season', page='galery')}}">Galery</a></li>
+              <li><a id="drop-season" href="{{url_for('season', page='mission')}}">Mission</a></li>
+              <li><a id="drop-season" href="{{url_for('season', page='rank')}}">Rank</a></li>
+            </ul>
+          </li>
+
+          {% if current_user.is_authenticated %}
+          <li><a href=""><i class="bars icon"></i></a> 
+          {% else %}
+          <li><a class="btnlogin" id="btnlogin" href="{{url_for('login')}}">LOGIN</a>
+          {% endif %}
+            <ul>
+              {% if current_user.is_authenticated %}
+              <li><a  class="btnlogin" href="{{url_for('dashboard')}}">Dashboard</a></li>
+              <li><a  class="btnlogin" href="{{url_for('search_friends')}}">Search Friends</a></li>
+              <li><a  class="btnlogout" id="btnlogout" href="{{url_for('logout')}}">Logout</a></li>
+              {% else %}
+              <li><a  class="btnsignup" id="btnlogout" href="{{url_for('signup')}}">SIGNUP</a></li>
+              {% endif %}
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    {% set msg = ["abc","def", "ghi", "jklm"]%}
+  {% for i in range(get_flashed_messages()|length) %}
+  <div class="ui message{{i}}">
+    <i class="close icon"></i>
+    <div class="header">
+      <p>{{get_flashed_messages()[i]}}</p>
+    </div>
+  </div>
+  {% endfor %}
+  
+  {% block body %}
+  {% endblock %}
+
+</body>
+
+
+{% block footer %}
+{% endblock %}
+  <script>
+    $('.message0 .close')
+      .on('click', function() {
+        $(this)
+          .closest('.message0')
+          .transition('fade')
+        ;
+      })
+    ;
+    
+    $('.message1 .close')
+      .on('click', function() {
+        $(this)
+          .closest('.message1')
+          .transition('fade')
+        ;
+      })
+    ;
+    
+    $('.message2 .close')
+      .on('click', function() {
+        $(this)
+          .closest('.message2')
+          .transition('fade')
+        ;
+      })
+    ;
+    
+    $('.message3 .close')
+      .on('click', function() {
+        $(this)
+          .closest('.message3')
+          .transition('fade')
+        ;
+      })
+    ;
+
+  // bot_header=document.getElementById('chatbot');
+  // bot_header.hide();
+  // console.log(window.frames.length)
+
+    // chtframe = document.getElementById('chatbot');
+    // temp = chtframe.contentWindow;
+    // idocument=temp.document;
+    // console.log(idocument);
+    // hea = idocument.getElementById('container');
+    // console.log(hea);
+  $('#chatbot').hide();
+  $('#cchat').hide();
+  $('#hchat').hide();
+
+  $('#schat').click(function(){
+    $('#schat').hide();
+    $('#chatbot').show();
+    $('#cchat').show();
+    $('#hchat').show();
+  })
+
+  $('#cchat').click(function(){
+    $('#schat').show();
+    $('#chatbot').hide();
+    $('#cchat').hide();
+    $('#hchat').hide();
+  })
+
+</script>
+</html>

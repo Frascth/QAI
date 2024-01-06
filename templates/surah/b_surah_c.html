@@ -1,0 +1,56 @@
+{% extends "theme.html" %}
+{% block head %}
+<style>
+  body{
+    background-attachment: fixed;
+}
+</style>
+{% endblock %}
+{% block body %}
+  <div class="bg-rank-relative">
+    <h1 class="rank">Casual</h1>
+  </div>
+
+    {% if current_user.is_authenticated%}
+    <div class="ayahfav">
+      {% if surahn != None %}
+      <a href="{{url_for('q_b_s', surah_number=surahn+1, _anchor='ayah-'+(ayahn-1)|string)}}">
+        <div class="lastread">
+          <label for="">Last Read</label>
+          <p>Surah {{surah_disp}} ayah {{ayahn}}</p>
+        </div>
+      </a>
+      {% else %}
+      <div class="lastread">
+        <label for="">Last Read</label>
+      </div>
+      {% endif %}
+
+      <div class="bookmarks">
+        {% if ls_bookmarks%}
+        <label for="">Bookmarks</label><br>
+          {% for i in range(ls_bookmarks|length) %}
+            {% set anchor = ls_ayahn[i]-1 %}
+            <br><a href="{{url_for('q_b_s', surah_number=ls_surahn[i]+1, _anchor='ayah-'+anchor|string)}}">Surah {{ls_surah_disp[i]}} ayah {{ls_ayahn[i]}}</a><br>
+          {% endfor %}
+      </div>
+        {% else %}
+        <label for="">Bookmarks</label><br>
+      </div>
+        {% endif %}
+
+    </div>
+    {% else %}
+    {% set skip = 1 %}
+    {% endif %}
+
+  <div class="quran-container">
+      {% for i in range(surahs|length) %}
+      <a href="{{url_for('q_b_s', surah_number=i+1)}}">
+        <button type="button" class="btnsurah">{{i+1}}. {{surahs[i]["name"]}} <br> ({{surahs[i]["translationEn"]}})
+          <br> {{surahs[i]["typeId"]}} - {{surahs[i]["numberOfAyahs"]}} ayahs</button>
+      </a>
+      {% endfor %}
+  </div>
+
+{% endblock %}

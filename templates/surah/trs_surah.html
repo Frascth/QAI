@@ -1,0 +1,89 @@
+{% extends "theme.html" %}
+
+{% block head %}
+
+  <script>
+  function subm(i, data){
+    let ayah = document.getElementById('ayah'+i.toString());
+    let el = document.getElementById('inp_lread'+i.toString());
+    let form = document.getElementById('ayah-'+i.toString())
+    ayah.value = i;
+    el.value = data;
+    // console.log(el.value);
+    form.submit();
+  }
+
+</script>
+
+  <style>
+    body {
+      background-attachment: fixed;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+
+
+
+  <h1 class="surah">{{surah["name"]}}</h1>
+  <p class="surah1">{{surah["translationEn"]}}</p>
+
+  {% for i in ls_murottal %}
+    <audio src="{{i}}"></audio>
+  {% endfor %}
+
+  <div class="alfatihah">
+    <div class="murottal">
+      <p class="murottal1">Murottal</p>
+      <a class="play" id="play">Play</a>
+      <a class="prev" id="prev" disabled="">Prev</a>
+      <label class="number" id="ayah">1</label>
+      <a class="next" id="next">Next</a>
+    </div>
+
+    <!-- <div class="container-bismillah">
+      <label for="" class="surahn-splitter">{{surahs[surah_number-1]['name']}}</label>
+      <div class="box-surahnum-splitter"><label for="" class="surahnum-splitter">{{surah_number}}</label></div>  
+      <label for="" class="ayahn-splitter">{{get_total_ayahnsurah(surah_number)}} Ayahs</label>
+      <img src="/static/splitter_surah.png" alt="">
+    </div> -->
+
+    {% for i in range(ayahs|length)%}
+    <form method="POST" action="" id="ayah-{{i}}" name="ayah_form">
+      <input type="text" id="aud{{i}}" name="aud" value="def" hidden>
+      <input type="text" id="ayah{{i}}" name="ayah" value="def" hidden>
+      <input id="inp_lread{{i}}" type="text" name="islastread" value="999" hidden>
+
+      <p class="angka">{{i+1}}</p>
+
+      <div class="container-record">
+        <button onclick="rec(); chng(this.value)" class="record" id="btnrec{{i}}" type="button" name="record" value="{{i}}">Record</button>
+        <button onclick="stopp(this.value); chng(this.value)" class="record" id="btnstop{{i}}" name="stop" value="{{i}}" disabled>Submit</button>
+      </div>
+      
+      <p class="arab">{{ayahs[i]["ayahText"]}}</p>
+      <p class="latin">{{ayahs[i]["readText"]}}<br>{{ayahs[i]["enText"]}}</p>
+      <button onclick="subm(this.value, 1)" class="mark" type="submit" value="{{i}}"><i class="paperclip icon"></i>Mark as Last Read</button>
+      <button onclick="subm(this.value, 0)" class="mark" type="submit" value="{{i}}"><i class="bookmark icon"></i>Add Bookmark</button>
+    </form>
+    {% endfor %}
+    
+
+    
+    {% if surah['number'] <= 1 %}
+    <a href="{{url_for('quran_by_surah', surah_number=surah['number']+1)}}" class="geser">Next &raquo;</a>
+    {% elif surah['number'] < 114 %}
+    <a href="{{url_for('quran_by_surah', surah_number=surah['number']-1)}}" class="geser">&laquo; Previous</a>
+    <a href="{{url_for('quran_by_surah', surah_number=surah['number']+1)}}" class="geser">Next &raquo;</a>
+    {% else %}
+    <a href="{{url_for('quran_by_surah', surah_number=surah['number']-1)}}" class="geser">&laquo; Previous</a>
+    {% endif %}
+
+  </div>
+
+{% endblock %}
+
+{% block footer %}
+<script src="/static/surah.js"></script>
+{% endblock %}

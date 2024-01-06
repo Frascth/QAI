@@ -1,0 +1,142 @@
+{% extends "theme.html" %}
+
+{% block body %}
+  <div class="nextjoin">
+    <form method="post" action="">
+        {{ jkform.csrf_token }}
+      {{jkform.id(value=found_khatam.id, readonly="readonly")}}
+      {% for msg in jkform.id.errors %}
+          <li>{{ msg }}</li>
+      {% endfor %}
+
+      <br>
+      <label class="listjoin">Title : {{found_khatam.title}}</label>
+      <br>
+
+      <label class="listjoin">Author : {{found_khatam.author.username}}</label>
+      <br>
+
+      <label class="listjoin">Start : {{utc2loc(found_khatam.start)}}</label>
+      <br>
+
+      <label class="listjoin">Deadline : {{utc2loc(found_khatam.deadline)}}</label>
+      <br>
+      
+      {% if found_khatam.setpassword == 0 %}
+          {% set pass = "No" %}
+          <label class="listjoin"><strong>Password: </strong>{{pass}}</label>
+      {% else %}
+          {% set pass = "Yes" %}
+          {% if current_user not in found_khatam.members %}
+              <label class="listjoin"><strong>Password: </strong></label>
+              <br>
+              {{ jkform.password(class="text") }}
+          {% else %}
+              <label class="listjoin"><strong>Password: </strong>{{ pass }}</label>
+          {% endif %}
+      {% endif %}
+      <br>
+
+      <label class="listjoin">Member Rule : {{found_khatam.member_rule}}</label>
+      <br>
+      
+      {% set ls_juz = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] %}
+
+          {% set member_juz = str2list(found_khatam.member_juz) %}
+  
+          {% for i in member_juz %}
+              {% if i in ls_juz %}
+                  {% if ls_juz.remove(i) %} {% endif %}
+              {% endif %}
+          {% endfor %}
+  
+            {% if current_user not in found_khatam.members %}
+                {% if found_khatam.member_rule == "Free to Choose"%}
+                    <label class="listjoin"><strong>My Juz: </strong></label>
+                    <br>
+                    <select class="juz" name="my_juz" id="my_juz">
+                        {% for i in ls_juz %}
+                            <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                {% endif %}
+            {% else %}
+                {% for i in range(found_khatam.members|length) %}
+                  {% if found_khatam.members[i] == current_user %}
+                  <label class="listjoin"><strong>My Juz: </strong>{{ str2list(found_khatam.member_juz)[i] }}</label>
+                  <br>
+                  {% endif %}
+                {% endfor %}
+            {% endif %}
+
+        <label class="listjoin"><strong>Member</strong></label><br>
+        <div class="container-member">
+            {% for j in range(found_khatam.members|length) %}
+                <li class="listjoin">Juz {{ str2list(found_khatam.member_juz)[j] }}. {{ found_khatam.members[j].username }} 
+                {% set progress = [] %}
+                {% for k in found_khatam.members[j].progress_khatam%}
+                    {% if progress.append(k.for_khatam_id) %} {% endif %}
+                {% endfor %}
+                
+                {% if found_khatam.id in progress %}
+                    (incomplete) </li>
+                {% else %}
+                    (complete) </li>
+                {% endif %}
+
+            {% endfor %}
+        </div>
+        {% if current_user in found_khatam.members %}
+            <button onclick="alert('Already join this khataman');" style="left: 39%;" class="bjoin" type="submit" disabled>Already Join</button>
+        {% elif found_khatam.members|length >= 30 %}
+            <button onclick="alert('Khataman full');" style="left: 39%;" class="bjoin" type="button" disabled>Full</button>
+        {% elif current_user not in found_khatam.members %}
+            <button class="bjoin" type="submit">Join</button>
+        {% else %}
+            <button onclick="alert('Already join this khataman');" class="bjoin" type="submit" disabled>Already Join</button>
+        {% endif %}
+
+
+    </form>
+    {% if found_khatam.author == current_user %}
+        <form action="{{url_for('ekhatam', id=found_khatam.id)}}">
+            <button id="btn_ekhatam" class="bjoin" type="submit">Edit</button>
+        </form>
+        <button onclick="$('#del-modal').modal('show');" id="btn_dkhatam" class="bjoin" type="button">Delete</button>
+    {% else %}
+    {% endif %}
+
+
+  </div>
+
+  <!-- modal -->
+  <div id="del-modal">
+
+    <div class="del-modal-header">
+        <label for="" class="txt-content-1" style="font-size: 24px; color: white;">Delete Khataman</label>
+    </div>
+
+    <div class="del-modal-content">
+        <label class="txt-content-1" style="font-size: 14px;">Are you sure want to delete your khataman?</label>
+    </div>
+
+    <form action="{{url_for('dkhatam', id=found_khatam.id)}}">
+        <div class="del-modal-action">
+            <button class="btn0" type="submit">Delete</button>
+            <button class="btn1" type="button">Cancel</button>
+        </div>
+    </form> 
+
+  </div>
+
+
+
+
+{% endblock %}
+
+{% block footer %}
+<script>
+    $("#del-modal").hide();
+</script>
+{% endblock %}

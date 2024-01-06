@@ -1,0 +1,43 @@
+{% extends "theme.html" %}
+
+{% block head %}
+<style>
+  body{
+    background-color: rgb(195, 203, 209);
+  }
+  </style>
+{% endblock %}
+
+{% block jquery %}
+{% endblock %}
+
+
+{% block body %}
+    <div class="hadits-back">
+      <h1 class="hadits">“Recite the Qur’an, for it will come as an <br> intercessor for its reciters on the Day of Resurrection.” (Muslim).</h1>
+    </div>
+    <div class="button">
+      <a class="btnlogin" id="btnlogin"  href="{{url_for('signup')}}">Join Now</a>
+    </div>
+
+    <h1 class="fitur">Our Feature</h1>
+  <div class="fitur1">
+    <p class="fiturlist">Artificial Intelligence</p>
+    <p class="teks">You will be informed as to which ayah you are currently reading. <br>Our artificial intelligence feature will help you find the ayah more quickly and accurately than manually searching for it.</p>
+  </div>
+  <div class="fitur2">
+    <p class="fiturlist">Track Record System</p>
+    <p class="teks">There will be various tiers that you can achieve in this Track Record System.<br> Each tier will show how many Quranic ayah you have read. Challenge yourself <br>by continuing to read the Quran in order to reach the highest tier!</p>
+  </div>
+  <div class="fitur3">
+    <p class="fiturlist">Khataman</p>
+    <p class="teks">You will be able to meet people who share your goals and a strong desire <br> to perform khatam qur'an. There is no need to worry about not having people <br> to do khataman because each member of one group will be given one juz.</p>
+  </div>
+  <div class="fitur4">
+    <p class="fiturlist">Explore</p>
+    <p class="teks">Islamic sciences can be learned through video sources provided <br> by religious leaders. The videos shown must have passed our screening <br>in order for the quality to be guaranteed where we filter only the best video<br> with excellent technical skills and teaching ability.</p>
+  </div>
+    
+    <p class="app">© 2022 Qur'an Artificial Intelligence. All rights reserved.</p>
+
+    {% endblock %}

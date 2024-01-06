@@ -1,0 +1,88 @@
+{% extends "theme.html" %}
+
+{% block head %}
+{% endblock%}
+
+{% block jquery %}
+  <script>
+
+    $(function(){
+      $("#lblpass").hide();
+      $("#password").hide();
+      $("#myjuz").hide();
+      $("#juz").hide();
+
+      $("#pass").click(function(){
+        var x = $(this).is(":checked");
+        if(x == true){
+          $("#lblpass").show();
+          $("#password").show();
+        }
+        else{
+          $("#lblpass").hide();
+          $("#password").hide();
+        }
+      });
+      $("#selectmember").click(function(){
+        var x = $(this).find(":selected").text()
+        if (x=="Free to Choose"){
+          $("#myjuz").show();
+          $("#juz").show();
+        }
+        else{
+          $("#myjuz").hide();
+          $("#juz").hide();
+        }
+      });
+  });
+  </script>
+{% endblock%}
+
+{% block body %}
+  <form method="POST" class="create" action="">
+    {{ ckform.csrf_token }}
+
+    <label class="label" for="title">Title<br></label>
+    {{ ckform.title(class='text')}}
+    {% for msg in ckform.title.errors %}
+        <li class="label">{{ msg }}</li>
+    {% endfor %}
+
+    <br>
+    <label class="label" for="deadline">Deadline<br></label>
+    {{ ckform.deadline(title="Set Khataman Deadline") }}
+    {% for msg in ckform.deadline.errors %}
+        <li class="label">{{ msg }}</li>
+    {% endfor %}
+
+    <br>
+    {{ ckform.setpassword(title="Set Khataman Password", label="setpassword", id="pass") }}
+    <label class="label" style="left:10%;" for="pass">Set Password</label>
+    {% for msg in ckform.setpassword.errors %}
+        <li class="label">{{ msg }}</li>
+    {% endfor %}
+
+    <br>
+    <label class="label" for="password" id="lblpass">Password <br></label>
+    {{ ckform.password(class="pw", type="password", id="password") }}
+    {% for msg in ckform.password.errors %}
+        <li class="label">{{ msg }}</li>
+    {% endfor %}
+
+    <br>
+    <label class="label" for="selectmember">Member Rule <br></label>
+    {{ ckform.member_rule(id="selectmember", class="smember") }}
+    {% for msg in ckform.member_rule.errors %}
+        <li class="label">{{ msg }}</li>
+    {% endfor %}
+
+    <br>
+    <label class="label" id="myjuz" for="myjuz">My Juz <br></label>
+    {{ ckform.my_juz(class="juz", id="juz") }}
+    {% for msg in ckform.my_juz.errors %}
+        <li class="label">{{ msg }}</li>
+    {% endfor %}
+    
+    <input class="btncreate" type="submit" value="Create">
+  </form>
+{% endblock %}

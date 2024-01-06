@@ -1,0 +1,14 @@
+SpeechRecognition
+librosa
+pyarabic
+Flask
+Flask-SQLAlchemy
+Flask-Bcrypt
+Flask-Login
+Flask-WTF
+email-validator
+requests
+tensorflow
+thefuzz
+SoundFile
+PySoundFile

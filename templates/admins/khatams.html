@@ -1,0 +1,48 @@
+{% extends "admins/theme.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block jquery %}
+{% endblock %}
+
+{% block body %}
+
+{% for msg in get_flashed_messages() %}
+    <p>{{ msg }}</p>
+{% endfor %}
+
+{% for i in khatams %}
+    <form class="ui form" method="post" action="/admin/khatams/{{i.id}}">
+        <input type="text" name="id" value="{{ i.id }}" hidden>
+        <label for=""><strong>Id: </strong>{{i.id}}</label>
+        <br>
+        <label for=""><strong>Author Id: </strong>{{i.author_id}}</label>
+        <br>
+        <label for=""><strong>Author: </strong>{{i.author.username}}</label>
+        <br>
+        <label for=""><strong>title: </strong>{{i.title}}</label>
+        <br>
+        <label for=""><strong>start: </strong>{{i.start}}</label>
+        <br>
+        <label for=""><strong>deadline: </strong>{{i.deadline}}</label>
+        <br>
+        <label for=""><strong>setpassword: </strong>{{i.setpassword}}</label>
+        <br>
+        <label for=""><strong>password: </strong>{{i.password}}</label>
+        <br>
+        <label for=""><strong>member_rule: </strong>{{i.member_rule}}</label>
+        <br>
+        <label for=""><strong>member_juz: </strong>{{i.member_juz}}</label>
+        <br>
+        <label for=""><strong>stoped: </strong>{{i.stoped}}</label>
+        <br>
+        <label for=""><strong>Khatam Member: </strong>{{i.members}}</label>
+        <br>
+
+        <button type="submit">Edit</button>
+    </form>
+{% endfor %}
+
+    
+{% endblock %}

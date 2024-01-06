@@ -1,0 +1,45 @@
+{% extends "admins/theme.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block jquery %}
+{% endblock %}
+
+{% block body %}
+<form class="ui form" method="post" action="">
+    {% for msg in get_flashed_messages() %}
+        <p>{{ msg }}</p>
+    {% endfor %}
+
+    {{ rform.csrf_token }}
+
+    <label for="season_start">Season Start</label>
+    {{ rform.season_start }}
+    <br><br>
+    
+    <label for="season_duration">Season Duration (Days)</label>
+    {{ rform.season_duration }}
+    <br><br>
+
+    <label for="ayah_points">Ayah Point (150,650,1400,2400,3900,5750,8000)</label>
+    {{ rform.ayah_points }}
+    <br><br>
+
+    <label for="tier_names">Tier Name (Al Jannah,Darussalam,Darul Khuld,Darul Muqamah,Jannatul Maqwa,Adn,Firdaus)</label>
+    {{ rform.tier_names }}
+    <br><br>
+
+    <label for="days">Days Now from Start Season</label>
+    {{ rform.days }}
+    <br><br>
+
+    <label for="next_day">Days Cycle (UTC)</label>
+    {{ rform.next_day }}
+    <br><br>
+
+    <button type="submit">Update</button>
+    
+</form>
+    
+{% endblock %}
